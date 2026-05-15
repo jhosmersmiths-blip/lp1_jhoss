@@ -12,18 +12,18 @@ public class Productos {
     private int id_producto;
     private String nombre;
     private String descripcion;
-    private double preciuo;
+    private double precio;
     private int stock;
     private String imagen;
 
     public Productos() {
     }
 
-    public Productos(int id_producto, String nombre, String descripcion, double preciuo, int stock, String imagen) {
+    public Productos(int id_producto, String nombre, String descripcion, double precio, int stock, String imagen) {
         this.id_producto = id_producto;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.preciuo = preciuo;
+        this.precio = precio;
         this.stock = stock;
         this.imagen = imagen;
     }
@@ -52,12 +52,12 @@ public class Productos {
         this.descripcion = descripcion;
     }
 
-    public double getPreciuo() {
-        return preciuo;
+    public double getPrecio() {
+        return precio;
     }
 
-    public void setPreciuo(double preciuo) {
-        this.preciuo = preciuo;
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
 
     public int getStock() {
