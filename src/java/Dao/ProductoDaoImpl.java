@@ -75,14 +75,15 @@ public class ProductoDaoImpl implements IProducto {
         String query = null;
 
         try {
-            query = "INSERT INTO productos(nombre,descripcion, precio, stock)"
-                    + " VALUES(?,?,?,?)";
+            query = "INSERT INTO productos(nombre,descripcion, precio, stock, imagen)"
+                    + " VALUES(?,?,?,?,?)";
             cn = ConexionSingleton.getConnection();
             st = cn.prepareStatement(query);
             st.setString(1, p.getNombre());
             st.setString(2, p.getDescripcion());
             st.setDouble(3, p.getPrecio());
             st.setInt(4, p.getStock());
+            st.setString(5, p.getImagen());
 
             st.executeUpdate();
             flag = true;
@@ -115,7 +116,7 @@ public class ProductoDaoImpl implements IProducto {
         try {
 
             query = "UPDATE productos SET nombre = ?, descripcion = ?, "
-                    + "precio = ?, stock = ? "
+                    + "precio = ?, stock = ?, imagen = ? "
                     + "WHERE id_producto = ?";
 
             cn = ConexionSingleton.getConnection();
@@ -124,7 +125,8 @@ public class ProductoDaoImpl implements IProducto {
             st.setString(2, p.getDescripcion());
             st.setDouble(3, p.getPrecio());
             st.setInt(4, p.getStock());
-            st.setInt(5, p.getId_producto());
+            st.setString(5, p.getImagen());
+            st.setInt(6, p.getId_producto());
 
             st.executeUpdate();
 
@@ -156,7 +158,7 @@ public class ProductoDaoImpl implements IProducto {
     }
 
     @Override
-    public Productos SerachById(int id) {
+    public Productos SearchById(int id) {
         Productos prod = null;
         PreparedStatement st;
         //declarar variable que va conectar el SQL de insercion
@@ -176,6 +178,7 @@ public class ProductoDaoImpl implements IProducto {
                 prod.setDescripcion(rs.getString("descripcion"));
                 prod.setPrecio(rs.getDouble("precio"));
                 prod.setStock(rs.getInt("stock"));
+                prod.setImagen(rs.getString("imagen"));
             }
         } catch (Exception e) {
             System.out.println("error de busqueda" + e.getMessage());
@@ -214,14 +217,14 @@ public class ProductoDaoImpl implements IProducto {
             flag = true;
 
         } catch (Exception e) {
-            System.out.println("Error de inserccion" + e.getMessage());
+            System.out.println("Error al eliminar" + e.getMessage());
             try {
                 cn.rollback();
             } catch (Exception ex) {
 
             }
             flag = false;
-            System.out.println("Error , no se agrego el registro");
+            System.out.println("Error , no se elimino el registro");
         } finally {
             if (cn != null) {
                 try {

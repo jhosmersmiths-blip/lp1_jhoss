@@ -15,7 +15,7 @@ public interface IProducto {
     public List<Productos> lista();
     public boolean insert (Productos p);
     public boolean update (Productos p);
-    public Productos SerachById(int id);
+    public Productos SearchById(int id);
     public boolean delete(int id);
     public boolean updateStock(int id, int stock);
 }

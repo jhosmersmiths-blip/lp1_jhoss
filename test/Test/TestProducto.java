@@ -19,12 +19,12 @@ public class TestProducto {
 
     public static void main(String[] args) {
         TestProducto t = new TestProducto();
-        //t.listar();
         //t.agregar();
+        //t.listar();
         //t.actualizar();
         //t.buscarPorId();
         //t.elimnar();
-        t.actualizarStock();
+        //t.actualizarStock();
     }
 
     public static void listar() {
@@ -45,14 +45,15 @@ public class TestProducto {
 
     public static void agregar() {
         Productos p = new Productos();
-        p.setNombre("gaseosa");
-        p.setDescripcion("bebida refrescante");
-        p.setPrecio(2.00);
+        p.setNombre("mouse ");
+        p.setDescripcion("retroiluminado ");
+        p.setPrecio(20);
         p.setStock(50);
+        p.setImagen("/resoouces/img/teclado.jpg");
 
         boolean result = dao.insert(p);
         if (result) {
-            System.out.println("Registro Sucess");
+            System.out.println("Producto Registrado ");
         } else {
             System.out.println("Error de registro");
 
@@ -62,10 +63,11 @@ public class TestProducto {
     public static void actualizar() {
         Productos p = new Productos();
         p.setId_producto(1);
-        p.setNombre("Arroz");
-        p.setDescripcion("granos");
-        p.setPrecio(4);
-        p.setStock(30);
+        p.setNombre("teclado mecanico");
+        p.setDescripcion("retroiluminado");
+        p.setPrecio(50);
+        p.setStock(50);
+        p.setImagen("/resouces/img/teclado.jpg");
         boolean result = dao.update(p);
         if (result) {
             System.out.println("Registro actualizado");
@@ -76,7 +78,7 @@ public class TestProducto {
     }
 
     public void buscarPorId() {
-        Productos prod = dao.SerachById(2);
+        Productos prod = dao.SearchById(2);
         if (prod != null) {
             System.out.println("ID:" + prod.getId_producto());
             System.out.println("Nombre:" + prod.getNombre());
