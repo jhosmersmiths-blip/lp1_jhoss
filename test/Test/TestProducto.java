@@ -19,12 +19,13 @@ public class TestProducto {
 
     public static void main(String[] args) {
         TestProducto t = new TestProducto();
-        //t.agregar();
-        //t.listar();
-        //t.actualizar();
-        //t.buscarPorId();
+        t.agregar();
+        t.listar();
+        t.buscarPorId();
+        t.actualizar();
+        t.actualizarStock();
         //t.elimnar();
-        //t.actualizarStock();
+        
     }
 
     public static void listar() {
@@ -62,12 +63,12 @@ public class TestProducto {
 
     public static void actualizar() {
         Productos p = new Productos();
-        p.setId_producto(1);
-        p.setNombre("teclado mecanico");
+        p.setId_producto(5);
+        p.setNombre("monitor");
         p.setDescripcion("retroiluminado");
-        p.setPrecio(50);
+        p.setPrecio(250);
         p.setStock(50);
-        p.setImagen("/resouces/img/teclado.jpg");
+        p.setImagen("/resouces/img/monitor.jpg");
         boolean result = dao.update(p);
         if (result) {
             System.out.println("Registro actualizado");
@@ -78,13 +79,14 @@ public class TestProducto {
     }
 
     public void buscarPorId() {
-        Productos prod = dao.SearchById(2);
+        Productos prod = dao.SearchById(3);
         if (prod != null) {
             System.out.println("ID:" + prod.getId_producto());
             System.out.println("Nombre:" + prod.getNombre());
             System.out.println("descripcion:" + prod.getDescripcion());
             System.out.println("precio:" + prod.getPrecio());
             System.out.println("stock:" + prod.getStock());
+            System.out.println("Ruta img:" + prod.getImagen());
         } else {
             System.out.println("producto no encontrado");
         }
@@ -103,7 +105,7 @@ public class TestProducto {
     }
 
     public static void actualizarStock() {
-        boolean result = dao.updateStock(1, 100);
+        boolean result = dao.updateStock(5, 100);
         if (result) {
             System.out.println("Stock actualizado correctamente");
         } else {
