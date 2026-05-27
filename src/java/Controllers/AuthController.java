@@ -4,6 +4,12 @@
  */
 package Controllers;
 
+import Dao.PersonaDaoImpl;
+import Dao.usuarioDaoImp;
+import Interface.IPersona;
+import Interface.IUsuario;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +17,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.Persona;
+import model.Usuario;
 
 /**
  *
@@ -19,15 +28,9 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet(name = "AuthController", urlPatterns = {"/AuthController"})
 public class AuthController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private final IUsuario uDao = new usuarioDaoImp();
+    private final IPersona pDao = new PersonaDaoImpl();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -71,7 +74,65 @@ public class AuthController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        //forma de recoger datos de la vista
+        String action = request.getParameter("action");
+
+        JsonObject jsonResponse = new JsonObject();
+
+        Gson gson = new Gson();
+        try (PrintWriter out = response.getWriter()) {
+            if ("validar".equals(action)) {
+                String user = request.getParameter("usuario");
+                String pasw = request.getParameter("password");
+                //variable local
+                Usuario us = uDao.validate(user, pasw);
+
+                if (us != null && us.getUsuario() != null) {
+                    HttpSession sesion = request.getSession(true);
+                    sesion.setAttribute("usuario", us);
+
+                    jsonResponse.addProperty("sucess", true);
+                    jsonResponse.addProperty("message", "inicio de sesion exitoso");
+                    jsonResponse.add("userData", gson.toJsonTree(us));
+                } else {
+                    jsonResponse.addProperty("sucess", false);
+                    jsonResponse.addProperty("message", "Usuario o contrasena incorrecta");
+                }
+                out.print(jsonResponse.toString());
+            } else if (action.equals("register")) {
+                Persona p = new Persona();
+                Usuario u = new Usuario();
+
+                p.setNombre(request.getParameter("nombre"));
+                p.setEmail(request.getParameter("email"));
+                p.setDireccion(request.getParameter("direccion"));
+                p.setTelefono(request.getParameter("telefono"));
+                u.setPassword(request.getParameter("password"));
+
+                int resultado = pDao.insert(p, u);
+                
+                jsonResponse.addProperty("sucess", resultado !=0);
+                jsonResponse.addProperty("message",resultado !=0 ? "Registro sucess":"error de registro");
+                out.print(jsonResponse.toString());
+                
+            }else if(action.equals("Salir")){
+                HttpSession session = request.getSession();
+                if (session != null) session.invalidate(); 
+                    jsonResponse.addProperty("sucess", true);
+                jsonResponse.addProperty("message","Sesion cerrada");
+                out.print(jsonResponse.toString());
+                
+                }
+            
+        } catch (Exception e) {
+            response.setStatus(500);
+            jsonResponse.addProperty("sucess", false);
+            jsonResponse.addProperty("message", "Error" + e.getMessage());
+            response.getWriter().print(jsonResponse.toString());
+        }
     }
 
     /**
