@@ -1,0 +1,23 @@
+.bg-info{
+    background-color: #003366 !important;
+}
+.nav-link,.navbar-brand{
+    color:#f8a900 !important;
+}
+.nav-link:hover,.navbar-brand:hover{
+    color:#fff !important;
+}
+.btn-outline-success{
+    border-color: #f8a900 !important;
+    color:#fff !important;
+}
+.btn-outline-success:hover{
+     background-color: #f8a900 !important;
+    color: #003366 !important;
+}
+.card-header{
+    background-color: #003366 !important;
+    color: #fff !important; 
+
+}
+

@@ -94,11 +94,11 @@ public class AuthController extends HttpServlet {
                     HttpSession sesion = request.getSession(true);
                     sesion.setAttribute("usuario", us);
 
-                    jsonResponse.addProperty("sucess", true);
+                    jsonResponse.addProperty("success", true);
                     jsonResponse.addProperty("message", "inicio de sesion exitoso");
                     jsonResponse.add("userData", gson.toJsonTree(us));
                 } else {
-                    jsonResponse.addProperty("sucess", false);
+                    jsonResponse.addProperty("success", false);
                     jsonResponse.addProperty("message", "Usuario o contrasena incorrecta");
                 }
                 out.print(jsonResponse.toString());
@@ -114,14 +114,14 @@ public class AuthController extends HttpServlet {
 
                 int resultado = pDao.insert(p, u);
                 
-                jsonResponse.addProperty("sucess", resultado !=0);
+                jsonResponse.addProperty("success", resultado !=0);
                 jsonResponse.addProperty("message",resultado !=0 ? "Registro sucess":"error de registro");
                 out.print(jsonResponse.toString());
                 
             }else if(action.equals("Salir")){
                 HttpSession session = request.getSession();
                 if (session != null) session.invalidate(); 
-                    jsonResponse.addProperty("sucess", true);
+                    jsonResponse.addProperty("success", true);
                 jsonResponse.addProperty("message","Sesion cerrada");
                 out.print(jsonResponse.toString());
                 
@@ -129,7 +129,7 @@ public class AuthController extends HttpServlet {
             
         } catch (Exception e) {
             response.setStatus(500);
-            jsonResponse.addProperty("sucess", false);
+            jsonResponse.addProperty("success", false);
             jsonResponse.addProperty("message", "Error" + e.getMessage());
             response.getWriter().print(jsonResponse.toString());
         }
